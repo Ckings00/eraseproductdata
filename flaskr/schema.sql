@@ -2,10 +2,11 @@ DROP TABLE IF EXISTS product CASCADE;
 DROP TABLE IF EXISTS approve_list CASCADE;
 
 CREATE TABLE product (
+    id SERIAL NOT NULL
     product TEXT UNIQUE NOT NULL,
     textfield TEXT,
     related TEXT,
-    PRIMARY KEY (product)
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE approve_list (

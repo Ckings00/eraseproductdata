@@ -49,11 +49,28 @@ def command():
 
     liste = query_db(
     """
-    SELECT * FROM product
+    SELECT * FROM product;
     """
     )
     db.commit()
-    print (liste)
+    print(liste)
+    print("Worked")
+    return json.dumps("An erro ccured")
+@app.route("/command")
+def executecommand():
+    db = get_db()
+
+    execute_db(
+    """
+    CREATE TABLE product (
+    product TEXT UNIQUE NOT NULL,
+    textfield TEXT,
+    related TEXT,
+    PRIMARY KEY (product)
+    );
+    """
+    )
+    db.commit()
     print("Worked")
     return json.dumps("An erro ccured")
 
@@ -67,6 +84,8 @@ def get_product(product):
     print(response)
     text = response[0][1].split("\r\n")
     related = response[0][2].split("\r\n")
+    print(related)
+    print(text)
     return render_template("product/index.html", response=response[0][0], text=text, related=related)
 
 
@@ -109,7 +128,7 @@ def create_product():
             for i in relatedlist:
                 new_related_list = []
                 for j in relatedlist:
-                    if i != j:
+                    if str(i) != str(j):
                         new_related_list.append(j)
                 string_related_liste="\r\n".join(new_related_list)
                 print(string_related_liste)
@@ -117,10 +136,11 @@ def create_product():
                 db = get_db()
                 execute_db(
                     """
-                    INSERT INTO product VALUES (%s, %s, %s)
-                    """, (product_id, stepbystep, string_related_liste)
+                    INSERT INTO product (product, textfield, related)VALUES (%s, %s, %s)
+                    """, (i, stepbystep, string_related_liste)
                 )
                 db.commit()
+                
     return redirect("/")
 
 

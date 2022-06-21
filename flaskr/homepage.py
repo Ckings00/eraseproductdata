@@ -1,5 +1,5 @@
 from flask import Blueprint, g, render_template
-from . import get_db, execute_db
+from flaskr import get_db, execute_db
 import json
 bp = Blueprint("homepage", __name__)
 
@@ -11,7 +11,7 @@ def index():
 
 
 
-@bp.route("/commands")
+@app.route("/commands")
 def command():
     db = get_db()
     product = 11111

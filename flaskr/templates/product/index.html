@@ -12,6 +12,18 @@
         <p> {{element}}</p>
         {% endfor %}
     </div>
+    <div>
+        <h2>Related Products</h2>
+        <table>
+            <tr>
+                {% for element in related%}
+                <td><a href="{{element}}">{{element}}</a></td>
+                {% endfor %}
+                <td></td>
+            </tr>
+        </table>
+
+    </div>
 
     <button><a href="/" style="text-decoration:none;">Want to go back?</a></button>
 
