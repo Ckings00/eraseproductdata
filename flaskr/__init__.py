@@ -33,11 +33,10 @@ def query_db(query, args=(), one=False): # Fra Magnus uforandret
 
 def execute_db(query, args=(), one=False): # Fra Magnus uforandret
     # 'INSERT INTO bar_table (name, capacity) VALUES (%s, %s)'
-    # (str(name), int(capacity))
+    # (str(name), int(city))
     cur = get_db().cursor(cursor_factory=psycopg2.extras.DictCursor)
     cur.execute(query, args)
     cur.close()
-
 
 
 from . import homepage
