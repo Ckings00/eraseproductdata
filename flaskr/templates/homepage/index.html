@@ -1,34 +1,48 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+    <script src="https://unpkg.com/vue@3.0.5/dist/vue.global.js"></script>
 </head>
 <body>
-    <header>
-
-    </header>
-
+    <div id="app">
+    <form>
+        <input v-model="productform" type="text" id="productforminput" @input="updateproductlist($event)">
+    </form>
+    <br><br><br><br><br>
     <ul>
-        <li><a href="webprog?task=1&sub=index">Assignment 1</a></li>
-        <li><a href="webprog?task=2">Assignment 2</a></li>
-        <li><a href="webprog?task=3&sub=index">Assignment 3</a></li>
-
-        <li><a href="battleship">Battleship</a></li>
-        <li><a href="clicker">Clicker</a></li>
+        <li v-for="entry in product_list"><a v-bind:href="'/products/' + entry">{{ '{{' }}entry{{ '}}' }}</a></li> <!--Jinja and Vue fucking with each other-->
+        <li><a href="/create">Create</a></li>
     </ul>
-
-
-    <script>
-        let app = Vue.createapp({
-            data: function(){
-                return {
-                    product: 11111,
-                }
-            },
-            
-        });
-    </script>
+    </div>
 
 
 </body>
+
+<script>
+    let app = Vue.createApp({
+        data: function(){
+            return {
+                product: 11111,
+                product_list: [],
+            }
+        },
+        methods: {
+            updateproductlist: async function (e) {
+
+                let url = "/products/update?product=" +this.productform;
+                let response = await fetch(url);
+
+                if (response.status == 200) {
+                    let result = await response.json()
+
+                    this.product_list = result;
+                    
+                }
+            }
+        },
+
+    });
+    app.mount("#app");
+</script>
+
 </html>

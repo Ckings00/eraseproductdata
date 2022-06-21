@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://unpkg.com/vue@3.0.5/dist/vue.global.js"></script>
+    <title id="titleproduct"> {{response}}</title>
+</head>
+<body>
+    <div>
+        <h2>Regarding product: {{response}}</h2>
+        <p>This is how you erase it:</p> <br>
+        {% for element in text%}
+        <p> {{element}}</p>
+        {% endfor %}
+    </div>
+
+    <button><a href="/" style="text-decoration:none;">Want to go back?</a></button>
+
+
+</body>
+
+</html>
