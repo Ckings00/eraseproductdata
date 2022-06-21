@@ -61,6 +61,12 @@ def executecommand():
     db = get_db()
 
     execute_db(
+        """
+            UPDATE product SET related = '214634\r\n214645' WHERE product = '214642';
+        """
+    )
+    db.commit()
+    print("Worked")
     """
     CREATE TABLE product (
     product TEXT UNIQUE NOT NULL,
@@ -69,10 +75,10 @@ def executecommand():
     PRIMARY KEY (product)
     );
     """
-    )
-    db.commit()
-    print("Worked")
     return json.dumps("An erro ccured")
+
+
+    
 
 
 
@@ -88,6 +94,14 @@ def get_product(product):
     print(text)
     return render_template("product/index.html", response=response[0][0], text=text, related=related)
 
+@app.route("/products/<product>/update")
+def updateproductdescform(product):
+    print("Denna virke")
+    statement = f"SELECT * from product WHERE product = '{product}';"
+    response = query_db(statement)
+    text = response[0][1].split("\r\n")
+    related = response[0][2].split("\r\n")
+    return render_template("product/update.html", response=response[0][0], text=text, related=related)
 
 @app.route("/products/update")
 def update_product_list():
@@ -139,10 +153,45 @@ def create_product():
                     INSERT INTO product (product, textfield, related)VALUES (%s, %s, %s)
                     """, (i, stepbystep, string_related_liste)
                 )
-                db.commit()
-                
+                db.commit()         
     return redirect("/")
 
+@app.route("/updateproduct", methods=("GET", "POST"))
+def updateproductdesc():
+    if request.method == "POST":
+        product_id = request.form["product_id"]
+        print(product_id)
+        stepbystep = request.form["stepbystep"]
+        related = request.form["related"]
+        if " " in related:
+            print("finner mellomring")
+            related_liste = related.split(" ")
+            for index, i in enumerate(related_liste):
+                if len(i) > 0:
+                    continue
+                del related_liste[index]
+        elif " " not in related:
+            print("finner ikke mellomring")
+            related_liste = related.split("\r\n")
+        string_related_liste = "\r\n".join(related_liste)
+        print(string_related_liste)
+        db = get_db()
+        execute_db(
+            """
+            UPDATE product
+            SET product = %s,
+            textfield = %s, 
+            related = %s
+            WHERE product = %s;
+            """, (product_id, stepbystep, string_related_liste, product_id)
+        )
+        db.commit()
+        print(related)
+        print("Nyliste")
+        print(related_liste)
+        print(string_related_liste)
+
+    return redirect("/")
 
 if __name__ == "__main__":
     app.run()

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title id="titleproduct"> {{response}}</title>
+</head>
+<body>
+    <div>
+        <h2>Regarding product: {{response}}</h2>
+        <p>Oppdater nullstillingsguide</p> <br>
+
+        <form action="/updateproduct" id="updateproduct" method="post">
+            <label for="product_id">Produkt ID</label>
+            <input type="text" name="product_id" value="{{response}}" readonly><br>
+            <textarea name="stepbystep" form="updateproduct" style="width: 250px; height: 300px">{% for element in text%}{{element}}{% endfor %}</textarea> <br>
+            <textarea name="related" form="updateproduct" style="width: 250px; height: 100px">{% for element in related%}{{element}} {% endfor %}</textarea> <br>
+            <button>Submit</button>
+
+        </form>
+
+    </div>
+
+
+    <button><a href="/" style="text-decoration:none;">Want to go back?</a></button>
+
+
+</body>
+
+</html>
